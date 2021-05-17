@@ -1,0 +1,53 @@
+ // Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.0.1'
+//        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.jakewharton:butterknife-gradle-plugin:8.4.0'
+        classpath'me.tatarka:gradle-retrolambda:3.7.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+        google()
+        //从Android studio 3.0+开始 google1支持库开始放在google()里面
+        //如果发现v4、v7下载不下来添加google() 或  maven { url "https://maven.google.com" }
+        maven { url "https://jitpack.io" }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ ext {
+
+     compileSdkVersion = 26
+     buildToolsVersion = '26.0.2'
+     minSdkVersion = 15
+     targetSdkVersion = 26
+
+     var = [
+             supportLibraryVersion: "26.0.2",
+             butterknifeVersion: "8.5.1",
+             BaseRecyclerViewAdapterHelperVersion: "2.9.40",
+             SmartRefreshLayoutVersion: "1.1.0-alpha-29",
+             rxpermissionsVersion: "0.9.5@aar",
+             roundedimageviewVersion: "2.3.0",
+             swipebacklayoutVersion: "1.1.0",
+             glideVersion:"4.7.1",
+             rxlifecycleVersion:"2.1.0",
+             autosizeVersion:"1.1.2"
+     ]
+ }

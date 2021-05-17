@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        applicationId "com.example.xsl.architecturedemo2"
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    api "com.android.support:appcompat-v7:$var.supportLibraryVersion"
+    api "com.android.support:design:$var.supportLibraryVersion"
+    api "com.android.support:support-annotations:$var.supportLibraryVersion"
+    api "com.android.support:support-v4:$var.supportLibraryVersion"
+    api project(':corelibrary')
+    api project(':xunfeiyuyinlibrary')
+    api files('libs/aliyun-oss-sdk-android-2.3.0.jar')
+    api project(':sharelibrary')
+    api project(':selectlibrary')
+    //ARouter（不能引入apt否则会无效）
+    api ('com.alibaba:arouter-api:1.3.1'){
+        exclude group: 'com.android.support'
+    }
+    annotationProcessor 'com.alibaba:arouter-compiler:1.1.4'
+    api 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+    api 'com.android.support.constraint:constraint-layout:1.0.2'
+    testApi 'junit:junit:4.12'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.5'
+    api ('com.jakewharton:butterknife:8.5.1'){
+        exclude group: 'com.android.support'
+    }
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+
+
+}

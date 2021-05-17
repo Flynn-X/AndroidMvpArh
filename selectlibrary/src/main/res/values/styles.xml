@@ -1,0 +1,46 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!--设置NoActionBar属性-->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <!--全屏幕显示-->
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowTranslucentStatus">false</item>
+    </style>
+
+
+    <!-- Activity全屏进入淡入淡出主题 图片查看-->
+    <!--1、不要用overridePendingTransition设置这个动画
+    2、不要设置成全屏，再设置成notitlebar这样会影响其他activity-->
+    <style name="activityTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/black</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/black</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!--&lt;!&ndash; 设置activity切换动画 &ndash;&gt;-->
+        <!--<item name="android:windowAnimationStyle">@style/activityAnimation</item>-->
+        <item name="windowNoTitle">true</item>
+        <!--背景设为全透明-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 重点 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!--布局延伸到状态栏-->
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+    <style name="activityAnimation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/fade_out</item>
+    </style>
+
+
+
+</resources>

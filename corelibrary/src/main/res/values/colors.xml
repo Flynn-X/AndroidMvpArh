@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="prompt_success">#31c27c</color>
+    <color name="prompt_error">#ff0000</color>
+    <color name="prompt_warning">#f0633d</color>
+    <color name="white">#ffffff</color>
+
+    <color name="MainTextColor">#333333</color>
+    <color name="SecondaryColor">#666666</color>
+    <color name="ThridColor">#969696</color>
+    <color name="line">#e0e0e0</color>
+
+</resources>

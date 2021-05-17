@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SelectLibrary</string>
+    <!--记录图片真实宽度-->
+    <item type="id" name="width_tag" />
+    <!--记录图片真实高度-->
+    <item type="id" name="height_tag"></item>
+    <string name="folder_name">相机胶卷</string>
+</resources>

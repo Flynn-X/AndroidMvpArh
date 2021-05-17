@@ -1,0 +1,57 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'com.novoda.bintray-release'
+//
+//publish {
+//    userOrg = 'celery1025'      //bintray注册的用户名
+//    groupId = 'com.celery1025'         //compile引用时的第1部分groupId
+//    artifactId = 'sharelibrary'     //compile引用时的第2部分项目名
+//    publishVersion = '1.1.2'    //compile引用时的第3部分版本号
+//    desc = 'This is a share library'
+//}
+
+android {
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
+    defaultConfig {
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            //打开混淆
+            minifyEnabled false
+            //打开资源压缩
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    android {
+        lintOptions {
+            abortOnError false
+        }
+    }
+
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    testApi 'junit:junit:4.12'
+    api "com.android.support:appcompat-v7:$var.supportLibraryVersion"
+    api files('libs/SocialSDK_QQ_Simplify.jar')
+    api files('libs/umeng_shareboard_widget.jar')
+    api files('libs/SocialSDK_WeiXin_Full.jar')
+}
+
+

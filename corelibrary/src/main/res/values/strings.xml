@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">CoreLibrary</string>
+    <string name="APP_FILE_NAME">CoreLibrary</string>
+    <dimen name="textsize_big">20sp</dimen>
+    <dimen name="textsize_middle">18sp</dimen>
+    <dimen name="textsize_normal">15sp</dimen>
+    <dimen name="textsize_small">13sp</dimen>
+    <dimen name="textsize_mini">11sp</dimen>
+    <dimen name="toolbarhigh">48dp</dimen>
+
+
+</resources>
