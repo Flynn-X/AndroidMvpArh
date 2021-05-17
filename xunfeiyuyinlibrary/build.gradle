@@ -1,6 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven' //this way we can find the android-maven in jcenter
-group='com.github.Flynn-X' //this is your github name
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
@@ -34,6 +32,7 @@ android {
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
+    testApi 'junit:junit:4.12'
     testApi 'junit:junit:4.12'
     api files('libs/Msc.jar')
 }
