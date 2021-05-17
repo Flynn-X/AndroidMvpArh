@@ -1,6 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.github.dcendents.android-maven' //this way we can find the android-maven in jcenter
-group='com.github.Flynn-X' //this is your github name
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
