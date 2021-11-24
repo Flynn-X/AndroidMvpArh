@@ -11,7 +11,7 @@ import android.graphics.Color;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
-import com.example.xsl.corelibrary.utils.CoreContants;
+import com.example.xsl.corelibrary.utils.CoreConstants;
 import com.example.xsl.corelibrary.R;
 import com.example.xsl.corelibrary.bus.EventBase;
 import com.example.xsl.corelibrary.bus.RxBus;
@@ -58,10 +58,10 @@ public class DownloadService extends Service {
         if(intent==null){
             return super.onStartCommand(intent, flags, startId);
         }
-        String url = intent.getStringExtra(CoreContants.DOWNLOAD_URL);
-        String saveFolder = intent.getStringExtra(CoreContants.DOWNLOAD_SAVE_FOlDER);
-        String saveFileName = intent.getStringExtra(CoreContants.DOWNLOAD_SAVE_FILE_NAME);
-        boolean notity = intent.getBooleanExtra(CoreContants.DOWNLOAD_NOTITY,false);
+        String url = intent.getStringExtra(CoreConstants.DOWNLOAD_URL);
+        String saveFolder = intent.getStringExtra(CoreConstants.DOWNLOAD_SAVE_FOlDER);
+        String saveFileName = intent.getStringExtra(CoreConstants.DOWNLOAD_SAVE_FILE_NAME);
+        boolean notity = intent.getBooleanExtra(CoreConstants.DOWNLOAD_NOTITY,false);
         if (url == null || saveFolder == null){
             L.e("url："+ url + "\tsaveFolder：" + saveFolder);
             return super.onStartCommand(intent, flags, startId);
@@ -115,7 +115,7 @@ public class DownloadService extends Service {
                         ProgressInfo progressInfo = new ProgressInfo();
                         progressInfo.setPercent(percent);
                         progressInfo.setUrl(tag);
-                        RxBus.getInstance().post(new EventBase(CoreContants.DOWNLOAD_PROGRESS_NOTITY, tag, progressInfo));
+                        RxBus.getInstance().post(new EventBase(CoreConstants.DOWNLOAD_PROGRESS_NOTITY, tag, progressInfo));
                     }
                 }
 
@@ -137,7 +137,7 @@ public class DownloadService extends Service {
                 progressInfo.setPercent(100);
                 progressInfo.setUrl(tag);
                 progressInfo.setFilePath(savePath);
-                RxBus.getInstance().post(new EventBase(CoreContants.DOWNLOAD_PROGRESS_NOTITY,tag,progressInfo));
+                RxBus.getInstance().post(new EventBase(CoreConstants.DOWNLOAD_PROGRESS_NOTITY,tag,progressInfo));
                 stringMap.remove(tag);
             }
 

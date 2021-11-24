@@ -171,9 +171,6 @@ public class MainActivity extends CeleryBaseActivity implements MainActivityCont
 
                     secondActivityPresenter.getUsers();
 
-
-
-
 //                    AvatarDialog.show(MainActivity.this);
 
 //                    intent = new Intent(mContext,SecondActivity.class);

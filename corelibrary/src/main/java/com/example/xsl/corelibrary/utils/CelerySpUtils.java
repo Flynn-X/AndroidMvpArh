@@ -18,7 +18,7 @@ public class CelerySpUtils {
 
     private static SharedPreferences sharedPreferences = null;
     //空间命名
-    public static final String spName = "corelibrary";
+    public static final String spName = CoreLibrary.AtContext.getPackageName();
 
     private static SharedPreferences getmSharedPreferences(){
         if (sharedPreferences == null){

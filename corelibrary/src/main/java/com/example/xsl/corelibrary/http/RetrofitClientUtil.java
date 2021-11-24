@@ -5,6 +5,9 @@ import android.util.Log;
 
 
 import com.example.xsl.corelibrary.CoreLibrary;
+import com.example.xsl.corelibrary.utils.CelerySpUtils;
+import com.example.xsl.corelibrary.utils.CeleryToolsUtils;
+import com.example.xsl.corelibrary.utils.CoreConstants;
 import com.example.xsl.corelibrary.utils.CoreLibraryRetriever;
 import com.example.xsl.corelibrary.utils.L;
 import com.example.xsl.corelibrary.utils.NetworkUtil;
@@ -67,16 +70,29 @@ public class RetrofitClientUtil {
      */
     public static Retrofit getRetrofit(Context context){
         if (retrofit == null){
-            //获取实例
-            retrofit = new Retrofit.Builder()
-                    //设置OKHttpClient,如果不设置会提供一个默认的
-                    .client(getClient(context))
-                    //设置baseUrl
-                    .baseUrl(CoreLibraryRetriever.baseUrl)//post 方法
-                    //添加Gson转换器
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build();
+            if (CeleryToolsUtils.isBaseUrl(CelerySpUtils.getString(CoreConstants.SP_BASE_URL))){
+                //获取实例
+                retrofit = new Retrofit.Builder()
+                        //设置OKHttpClient,如果不设置会提供一个默认的
+                        .client(getClient(context))
+                        //设置baseUrl
+                        .baseUrl(CelerySpUtils.getString(CoreConstants.SP_BASE_URL))//post 方法
+                        //添加Gson转换器
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                        .build();
+            }else {
+                //获取实例
+                retrofit = new Retrofit.Builder()
+                        //设置OKHttpClient,如果不设置会提供一个默认的
+                        .client(getClient(context))
+                        //设置baseUrl
+                        .baseUrl(CoreLibraryRetriever.baseUrl)//post 方法
+                        //添加Gson转换器
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                        .build();
+            }
 
         }
         return retrofit;

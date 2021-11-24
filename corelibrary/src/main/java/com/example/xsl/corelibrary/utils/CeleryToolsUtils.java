@@ -1,6 +1,7 @@
 package com.example.xsl.corelibrary.utils;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -321,7 +322,7 @@ public class CeleryToolsUtils {
      */
     public static String getIMSI(Context context){
         TelephonyManager mTelephonyMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        String imsi = mTelephonyMgr.getSubscriberId();
+        @SuppressLint("MissingPermission") String imsi = mTelephonyMgr.getSubscriberId();
         return imsi ;
     }
 
@@ -332,7 +333,7 @@ public class CeleryToolsUtils {
      * @param tim  定义dateStr格式 如 "yyyy-MM-dd HH:mm"，"yyy/MM/dd HH:mm" 等等
      * @return
      */
-    public long getStringToDateTime(String dateStr,String tim){
+    public static long getStringToDateTime(String dateStr,String tim){
         SimpleDateFormat sdf=new SimpleDateFormat(tim);
         Date date =null;
         try {
@@ -647,6 +648,20 @@ public class CeleryToolsUtils {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 判断是不是baseUrl
+     * @param urls
+     * @return
+     */
+    public static boolean isBaseUrl(String urls){
+        if ((urls.startsWith("http://") || urls.startsWith("https://"))
+                && urls.contains(".") && urls.length()> 10){
+            return true;
+        }else {
+            return false;
+        }
     }
 
 }

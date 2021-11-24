@@ -31,10 +31,10 @@ public class ApkUtils {
         }else {
             //说明本地没有现成的安装包，启动下载
             Intent intent = new Intent(context, DownloadService.class);
-            intent.putExtra(CoreContants.DOWNLOAD_URL,url);
-            intent.putExtra(CoreContants.DOWNLOAD_SAVE_FOlDER,CeleryToolsUtils.getSystemFilePath(context, Environment.DIRECTORY_DOWNLOADS));
-            intent.putExtra(CoreContants.DOWNLOAD_SAVE_FILE_NAME,CeleryToolsUtils.getAppName(context)+".apk");
-            intent.putExtra(CoreContants.DOWNLOAD_NOTITY,true);
+            intent.putExtra(CoreConstants.DOWNLOAD_URL,url);
+            intent.putExtra(CoreConstants.DOWNLOAD_SAVE_FOlDER,CeleryToolsUtils.getSystemFilePath(context, Environment.DIRECTORY_DOWNLOADS));
+            intent.putExtra(CoreConstants.DOWNLOAD_SAVE_FILE_NAME,CeleryToolsUtils.getAppName(context)+".apk");
+            intent.putExtra(CoreConstants.DOWNLOAD_NOTITY,true);
             context.startService(intent);
         }
     }
