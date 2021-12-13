@@ -54,6 +54,8 @@ public class ImageLoaderRetriever {
     }
 
     protected ImageLoaderRetriever init(Context context) {
+        //这里必须初始为空，才能保证，自定义加载后不影响其他地方
+        requestOptions = null;
         this.context = context;
         return this;
     }
