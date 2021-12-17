@@ -27,6 +27,14 @@ public class CelerySpUtils {
         return sharedPreferences;
     }
 
+    /**
+     * 清除所有SharedPreferences数据
+     */
+    public static void clearAllCache(){
+        SharedPreferences.Editor editor = getmSharedPreferences().edit();
+        editor.clear();
+        editor.commit();
+    }
 
     /**
      * 保存boolen类型数据
