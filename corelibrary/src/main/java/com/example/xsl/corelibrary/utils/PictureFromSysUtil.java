@@ -1,6 +1,8 @@
 package com.example.xsl.corelibrary.utils;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,10 +11,16 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
+import android.webkit.MimeTypeMap;
 
 import com.example.xsl.corelibrary.CoreLibrary;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import static android.os.Environment.DIRECTORY_PICTURES;
 
 /**
  * 从系统中获取图片工具类
@@ -55,8 +63,11 @@ public class PictureFromSysUtil {
     public static final int CROP_PICTURE = 0x0113;
 
     private static File mCameraFile;//照相机的File对象
-    //裁剪后的File对象
-    private static File mCropFile = new File(CeleryToolsUtils.getSystemFilePath(CoreLibrary.AtContext, Environment.DIRECTORY_PICTURES), "camera_crop.jpg");
+    //裁剪后的File对象，这里适配Android 10 以上
+    //1、SDK>=30  因为系统裁剪不能访问App的私有路径，
+    //所以File 保存到公有路径Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES)
+    //2、SDK<30  可以保存到App的私有路径(App卸载可以删除) context.getExternalFilesDir(null).getAbsoluteFile()
+    private static File mCropFile = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES), "camera_crop.jpg");
     public static Uri outPutUri = Uri.fromFile(mCropFile);
 
     /**
@@ -85,7 +96,7 @@ public class PictureFromSysUtil {
      * 打开相册
      */
     public static void OpenAlbum(Activity context) {
-        File mGalleryFile = new File(CeleryToolsUtils.getSystemFilePath(context, Environment.DIRECTORY_PICTURES), "gallery.jpg");
+        File mGalleryFile = new File(CeleryToolsUtils.getSystemFilePath(context, DIRECTORY_PICTURES), "gallery.jpg");
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//如果大于等于7.0使用FileProvider
@@ -166,7 +177,7 @@ public class PictureFromSysUtil {
             return;
         }
         Intent intent = new Intent("com.android.camera.action.CROP");
-        //sdk>=24
+        //sdk>=24 && sdk< 29 (Android 7 到Android 9) android 10 开始进行分区存储，后续需要适配
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             intent.setDataAndType(inputUri, "image/*");
             intent.putExtra(MediaStore.EXTRA_OUTPUT, outPutUri);
@@ -174,7 +185,7 @@ public class PictureFromSysUtil {
             intent.putExtra("noFaceDetection", false);
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        } else {
+        }else {
             if (Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                 //这个方法是处理4.4以上图片返回的Uri对象不同的处理方法
                 String url = ImageTool.getImageAbsolutePath(context, inputUri);
@@ -212,6 +223,7 @@ public class PictureFromSysUtil {
         broadcastIntent.setData(Uri.fromFile(file));
         context.sendBroadcast(broadcastIntent);
     }
+
 
 
 }

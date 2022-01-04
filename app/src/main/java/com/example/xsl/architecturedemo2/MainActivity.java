@@ -169,9 +169,9 @@ public class MainActivity extends CeleryBaseActivity implements MainActivityCont
             switch (v.getId()){
                 case R.id.button:
 
-                    secondActivityPresenter.getUsers();
+//                    secondActivityPresenter.getUsers();
 
-//                    AvatarDialog.show(MainActivity.this);
+                    AvatarDialog.show(MainActivity.this);
 
 //                    intent = new Intent(mContext,SecondActivity.class);
 //                    startActivity(intent);
@@ -343,34 +343,34 @@ public class MainActivity extends CeleryBaseActivity implements MainActivityCont
 //    }
 
 
-//    /**
-//     * onActivityResult使用方法示例
-//     */
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == RESULT_OK){
-//            switch (requestCode){
-//                case PictureFromSysUtil.SELECT_PICTURES:
-//                    //跳转到系统剪切
-//                    PictureFromSysUtil.albumOnActivityResultStartPhotoZoom(mContext, data);
-//                    //获取选择的图片文件
-//                    File album = PictureFromSysUtil.albumOnActivityResult(mContext, data);
-//                    break;
-//                case PictureFromSysUtil.TAKE_PHOTO:
-//                    //拍照跳转到系统剪切
-//                    PictureFromSysUtil.carmeraOnActivityResultStartPhotoZoom(mContext, data);
-//                    //获取拍照照片文件
-//                    File carmera = PictureFromSysUtil.carmeraOnActivityResult(mContext, data);
-//                    break;
-//                case PictureFromSysUtil.CROP_PICTURE:
-//                    //获取剪切后文件
-//                    Bitmap bitmap  = BitmapFactory.decodeFile(PictureFromSysUtil.outPutUri.getPath());
-//                    imageView.setImageBitmap(bitmap);
-//                    break;
-//            }
-//        }
-//    }
+    /**
+     * onActivityResult使用方法示例
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            switch (requestCode){
+                case PictureFromSysUtil.SELECT_PICTURES:
+                    //跳转到系统剪切
+                    PictureFromSysUtil.albumOnActivityResultStartPhotoZoom(mContext, data);
+                    //获取选择的图片文件
+                    File album = PictureFromSysUtil.albumOnActivityResult(mContext, data);
+                    break;
+                case PictureFromSysUtil.TAKE_PHOTO:
+                    //拍照跳转到系统剪切
+                    PictureFromSysUtil.carmeraOnActivityResultStartPhotoZoom(mContext, data);
+                    //获取拍照照片文件
+                    File carmera = PictureFromSysUtil.carmeraOnActivityResult(mContext, data);
+                    break;
+                case PictureFromSysUtil.CROP_PICTURE:
+                    //获取剪切后文件
+                    Bitmap bitmap  = BitmapFactory.decodeFile(PictureFromSysUtil.outPutUri.getPath());
+                    imageView.setImageBitmap(bitmap);
+                    break;
+            }
+        }
+    }
 
 
     @RxBusEvent(value = "11")
