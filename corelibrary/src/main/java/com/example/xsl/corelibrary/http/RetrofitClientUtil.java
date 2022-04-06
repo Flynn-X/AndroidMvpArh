@@ -5,6 +5,7 @@ import android.util.Log;
 
 
 import com.example.xsl.corelibrary.CoreLibrary;
+import com.example.xsl.corelibrary.http.retrofiturlmanager.RetrofitUrlManager;
 import com.example.xsl.corelibrary.utils.CelerySpUtils;
 import com.example.xsl.corelibrary.utils.CeleryToolsUtils;
 import com.example.xsl.corelibrary.utils.CoreConstants;
@@ -24,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.FormBody;
@@ -70,29 +70,16 @@ public class RetrofitClientUtil {
      */
     public static Retrofit getRetrofit(Context context){
         if (retrofit == null){
-            if (CeleryToolsUtils.isBaseUrl(CelerySpUtils.getString(CoreConstants.SP_BASE_URL))){
-                //获取实例
-                retrofit = new Retrofit.Builder()
-                        //设置OKHttpClient,如果不设置会提供一个默认的
-                        .client(getClient(context))
-                        //设置baseUrl
-                        .baseUrl(CelerySpUtils.getString(CoreConstants.SP_BASE_URL))//post 方法
-                        //添加Gson转换器
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                        .build();
-            }else {
-                //获取实例
-                retrofit = new Retrofit.Builder()
-                        //设置OKHttpClient,如果不设置会提供一个默认的
-                        .client(getClient(context))
-                        //设置baseUrl
-                        .baseUrl(CoreLibraryRetriever.baseUrl)//post 方法
-                        //添加Gson转换器
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                        .build();
-            }
+            //获取实例
+            retrofit = new Retrofit.Builder()
+                    //设置OKHttpClient,如果不设置会提供一个默认的
+                    .client(getClient(context))
+                    //设置baseUrl
+                    .baseUrl(CoreLibraryRetriever.baseUrl)//post 方法
+                    //添加Gson转换器
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
 
         }
         return retrofit;
@@ -129,7 +116,7 @@ public class RetrofitClientUtil {
 
             String content = responseBody.string();
             String reciveLog = String.format("接收响应: [%s] %n返回json:【%s】 %.1fms%n",
-                    URLDecoderForUtf8(response.request().url().toString()),
+                    CeleryToolsUtils.URLDecoderForUtf8(response.request().url().toString()),
                     content,
                     (t2 - t1) / 1e6d);
 
@@ -193,14 +180,14 @@ public class RetrofitClientUtil {
 
 
             Request request = builder.build();
-            L.d(URLDecoderForUtf8(request.toString()));
+//            L.d(URLDecoderForUtf8(request.toString()));
             //post请求打印请求参数
             if(request.method().equals("POST")){
                 StringBuilder sb = new StringBuilder();
                 if ((request.body() instanceof FormBody)) {
                     FormBody body = (FormBody) request.body();
                     for (int i = 0; i < body.size(); i++) {
-                        sb.append( "\n" + body.encodedName(i) + "=" + URLDecoderForUtf8(body.encodedValue(i)));
+                        sb.append( "\n" + body.encodedName(i) + "=" + CeleryToolsUtils.URLDecoderForUtf8(body.encodedValue(i)));
                     }
                     L.d("表单提交请求参数：\n"+ "{" +  sb.toString() + "\n}");
                 }else if (request.body() instanceof MultipartBody){
@@ -210,12 +197,12 @@ public class RetrofitClientUtil {
                     }
                     L.d("文件上传参数：\n"+ "{" +  sb.toString() + "\n}");
 
-                }else {
+                } else {
                     //buffer流
                     Buffer buffer = new Buffer();
                     request.body().writeTo(buffer);
                     String oldParamsJson = buffer.readUtf8();
-                    L.d("Json传递请求参数："+ URLDecoderForUtf8(oldParamsJson));
+                    L.d("Json传递请求参数："+ CeleryToolsUtils.URLDecoderForUtf8(oldParamsJson));
                 }
             }
 
@@ -238,19 +225,7 @@ public class RetrofitClientUtil {
     }
 
 
-    /**
-     * URLEncoder 编码转换
-     * @param str 要解码成中文的字符串
-     * @return
-     */
-    private static String URLDecoderForUtf8(String str){
-        try {
-            return java.net.URLDecoder.decode(str,"UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return str;
-    }
+
 
 
     public static OkHttpClient getClient(Context mContext){
@@ -258,14 +233,17 @@ public class RetrofitClientUtil {
 //            ClearableCookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(mContext));
             File cacheFile = new File(mContext.getApplicationContext().getCacheDir(), "celery_retrofit");
             Cache cache = new Cache(cacheFile, 1024 * 1024 * 10); //100Mb
-            client = new OkHttpClient.Builder()
+            OkHttpClient.Builder builder = new OkHttpClient.Builder()
                     .addInterceptor(new LoggingInterceptor(mContext.getApplicationContext()))
                     .addInterceptor(new RequestInterceptor(mContext.getApplicationContext()))
 //                    .cookieJar(cookieJar)
                     .cache(cache)
                     .connectTimeout(30, TimeUnit.SECONDS)
                     .readTimeout(30, TimeUnit.SECONDS)
-                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS);
+
+            //支持动态改变baseUrl
+            client = RetrofitUrlManager.getInstance().with(builder)
                     .build();
         }
         return client;

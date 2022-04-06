@@ -4,11 +4,19 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Rect;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.Settings;
@@ -20,10 +28,12 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -656,12 +666,153 @@ public class CeleryToolsUtils {
      * @return
      */
     public static boolean isBaseUrl(String urls){
-        if ((urls.startsWith("http://") || urls.startsWith("https://"))
+        if (!isEmpty(urls) && (urls.startsWith("http://") || urls.startsWith("https://"))
                 && urls.contains(".") && urls.length()> 10){
             return true;
         }else {
             return false;
         }
+    }
+
+    /**
+     * 图片压缩
+     *
+     * @param filePath 图片本地路径
+     * @return 超过2k图片才进行尺寸压缩，压缩后尺寸为原来倍数份之一
+     */
+    public static File compressImageToFile(String filePath) {
+        File file = new File(filePath);
+        try {
+            //对gif图片不进行压缩
+            if (exChangeLower(filePath).endsWith(".gif")) {
+                return file;
+            }
+
+            int rotate = readPictureDegree(filePath);
+            Bitmap bitmap1 = BitmapFactory.decodeFile(filePath);
+            Bitmap bitmap = rotatingImageView(rotate,bitmap1);
+            if (bitmap.getWidth() >= 2560 || bitmap.getHeight() >= 2656) {
+                // 尺寸压缩倍数,值越大，图片尺寸越小
+                int ratio = 2;
+                // 压缩Bitmap到对应尺寸
+                Bitmap result = Bitmap.createBitmap(bitmap.getWidth() / ratio, bitmap.getHeight() / ratio, Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(result);
+                Rect rect = new Rect(0, 0, bitmap.getWidth() / ratio, bitmap.getHeight() / ratio);
+                canvas.drawBitmap(bitmap, null, rect, null);
+                // 0-100 100为不压缩
+                int options = 80;
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                // 把压缩后的数据存放到baos中
+                result.compress(Bitmap.CompressFormat.JPEG, options, baos);
+                try {
+                    FileOutputStream fos = new FileOutputStream(file);
+                    fos.write(baos.toByteArray());
+                    fos.flush();
+                    fos.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                // 0-100 100为不压缩
+                int options = 80;
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                // 把压缩后的数据存放到baos中
+                bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);
+                try {
+                    FileOutputStream fos = new FileOutputStream(file);
+                    fos.write(baos.toByteArray());
+                    fos.flush();
+                    fos.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return file;
+    }
+
+    /**
+     * 读取照片旋转角度
+     *
+     * @param path 照片路径
+     * @return 角度
+     */
+    public static int readPictureDegree(String path) {
+        int degree = 0;
+        try {
+            ExifInterface exifInterface = new ExifInterface(path);
+            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    degree = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    degree = 180;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    degree = 270;
+                    break;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return degree;
+    }
+
+
+    /**
+     * 旋转图片
+     * @param angle 被旋转角度
+     * @param bitmap 图片对象
+     * @return 旋转后的图片
+     */
+    public static Bitmap rotatingImageView(int angle, Bitmap bitmap) {
+        Bitmap returnBm = null;
+        // 根据旋转角度，生成旋转矩阵
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        try {
+            // 将原始图片按照旋转矩阵进行旋转，并得到新的图片
+            returnBm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+        } catch (OutOfMemoryError e) {
+        }
+        if (returnBm == null) {
+            returnBm = bitmap;
+        }
+        if (bitmap != returnBm) {
+            bitmap.recycle();
+        }
+        return returnBm;
+    }
+
+
+    /**
+     * 重启App
+     * @param context
+     */
+    public static void restartApp(Context context){
+        Intent intent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+        PendingIntent restartIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000, restartIntent); // 1秒钟后重启应用
+        System.exit(0);
+    }
+
+    /**
+     * URLEncoder 编码转换
+     * @param str 要解码成中文的字符串
+     * @return
+     */
+    public static String URLDecoderForUtf8(String str){
+        try {
+            return java.net.URLDecoder.decode(str,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return str;
     }
 
 }

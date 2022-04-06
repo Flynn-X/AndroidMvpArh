@@ -35,9 +35,11 @@ import com.example.xsl.corelibrary.bus.RxBus;
 import com.example.xsl.corelibrary.bus.RxBusEvent;
 import com.example.xsl.corelibrary.http.DownLoadProgressListener;
 import com.example.xsl.corelibrary.http.OkhttpClientUtils;
+import com.example.xsl.corelibrary.http.retrofiturlmanager.RetrofitUrlManager;
 import com.example.xsl.corelibrary.imageloader.ImageLoader;
 import com.example.xsl.corelibrary.utils.CelerySpUtils;
 import com.example.xsl.corelibrary.utils.CeleryToolsUtils;
+import com.example.xsl.corelibrary.utils.CoreConstants;
 import com.example.xsl.corelibrary.utils.L;
 
 import com.example.xsl.corelibrary.utils.PictureFromSysUtil;
@@ -66,6 +68,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+
 
 
 @Route(path = "/main/test")
@@ -159,6 +162,8 @@ public class MainActivity extends CeleryBaseActivity implements MainActivityCont
 
     }
 
+    int index = 0;
+
     /**
      * 单击事件
      */
@@ -168,10 +173,11 @@ public class MainActivity extends CeleryBaseActivity implements MainActivityCont
             Intent intent = null;
             switch (v.getId()){
                 case R.id.button:
+                    ++index;
+                    RetrofitUrlManager.getInstance().setGlobalDomain("https://flynnx.com/" + index);
+                    secondActivityPresenter.getUsers();
 
-//                    secondActivityPresenter.getUsers();
-
-                    AvatarDialog.show(MainActivity.this);
+//                    AvatarDialog.show(MainActivity.this);
 
 //                    intent = new Intent(mContext,SecondActivity.class);
 //                    startActivity(intent);

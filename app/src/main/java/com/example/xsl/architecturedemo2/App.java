@@ -23,7 +23,7 @@ public class App extends Application {
                 .setAlertDialogCenter(true);
 
         CoreLibrary.init(this,true)
-                .baseUrl(null)
+                .baseUrl("http://api.hahah.com/")
                 .celeryBaseActivityAutoSize(false)
                 .dialogOption(dialogOptions);
 
