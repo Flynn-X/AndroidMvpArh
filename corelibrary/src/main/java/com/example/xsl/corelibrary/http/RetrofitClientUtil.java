@@ -234,8 +234,8 @@ public class RetrofitClientUtil {
             File cacheFile = new File(mContext.getApplicationContext().getCacheDir(), "celery_retrofit");
             Cache cache = new Cache(cacheFile, 1024 * 1024 * 10); //100Mb
             OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                    .addInterceptor(new LoggingInterceptor(mContext.getApplicationContext()))
-                    .addInterceptor(new RequestInterceptor(mContext.getApplicationContext()))
+//                    .addInterceptor(new LoggingInterceptor(mContext.getApplicationContext()))
+//                    .addInterceptor(new RequestInterceptor(mContext.getApplicationContext()))
 //                    .cookieJar(cookieJar)
                     .cache(cache)
                     .connectTimeout(30, TimeUnit.SECONDS)
@@ -244,6 +244,8 @@ public class RetrofitClientUtil {
 
             //支持动态改变baseUrl
             client = RetrofitUrlManager.getInstance().with(builder)
+                    .addInterceptor(new LoggingInterceptor(mContext.getApplicationContext()))
+                    .addInterceptor(new RequestInterceptor(mContext.getApplicationContext()))
                     .build();
         }
         return client;
