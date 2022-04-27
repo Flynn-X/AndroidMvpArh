@@ -186,6 +186,7 @@ public class CelerySelectPictureActivity extends AppCompatActivity {
                                 .numColumns(4)
                                 .horizontalSpacing(SelectLibrary.dp2px(CelerySelectPictureActivity.this,1))
                                 .verticalSpacing(SelectLibrary.dp2px(CelerySelectPictureActivity.this,1))
+                                .showSave(false)
                                 .thumbImgs(thumb_list)
                                 .normalImgs(normal_list)
                                 .start();

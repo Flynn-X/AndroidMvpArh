@@ -16,10 +16,12 @@
 
         <activity
             android:name=".aty.CelerySelectPictureActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".aty.CeleryPictrueScanActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/activityTheme"
             android:windowSoftInputMode="adjustPan|stateHidden" />

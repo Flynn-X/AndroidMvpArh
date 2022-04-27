@@ -115,6 +115,16 @@ public class RequestScanRetriever {
         return this;
     }
 
+    /**
+     * 是否显示下载按钮
+     * @param bool
+     * @return
+     */
+    public RequestScanRetriever showSave(boolean bool) {
+        //横向分割空间
+        bundle.putBoolean("showSave",bool);
+        return this;
+    }
 
     public void start(){
         if (bundle != null && intent != null) {

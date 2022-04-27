@@ -281,11 +281,11 @@ public class MainActivity extends CeleryBaseActivity implements MainActivityCont
 //                    startActivityForResult(intent, 100);
 
 
-//                    SelectLibrary.openList(MainActivity.this)
-//                            .setStatusBarDarkText(true)
-//                            .setLimit(4)
-//                            .setConfirmTextColor(0xffe60000)
-//                            .startForResult(100);
+                    SelectLibrary.openList(MainActivity.this)
+                            .setStatusBarDarkText(true)
+                            .setLimit(4)
+                            .setConfirmTextColor(0xffe60000)
+                            .startForResult(100);
 
 //                    SelectLibrary.openList(MainActivity.this)
 //                            .setBackResId(R.mipmap.celery_left)
