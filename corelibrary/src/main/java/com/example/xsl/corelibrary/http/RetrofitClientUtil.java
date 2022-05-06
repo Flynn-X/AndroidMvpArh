@@ -230,13 +230,13 @@ public class RetrofitClientUtil {
 
     public static OkHttpClient getClient(Context mContext){
         if (client == null) {
-//            ClearableCookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(mContext));
+            ClearableCookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(mContext));
             File cacheFile = new File(mContext.getApplicationContext().getCacheDir(), "celery_retrofit");
             Cache cache = new Cache(cacheFile, 1024 * 1024 * 10); //100Mb
             OkHttpClient.Builder builder = new OkHttpClient.Builder()
 //                    .addInterceptor(new LoggingInterceptor(mContext.getApplicationContext()))
 //                    .addInterceptor(new RequestInterceptor(mContext.getApplicationContext()))
-//                    .cookieJar(cookieJar)
+                    .cookieJar(cookieJar)
                     .cache(cache)
                     .connectTimeout(30, TimeUnit.SECONDS)
                     .readTimeout(30, TimeUnit.SECONDS)
