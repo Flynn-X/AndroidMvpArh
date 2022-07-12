@@ -70,17 +70,29 @@ public class RetrofitClientUtil {
      */
     public static Retrofit getRetrofit(Context context){
         if (retrofit == null){
-            //获取实例
-            retrofit = new Retrofit.Builder()
-                    //设置OKHttpClient,如果不设置会提供一个默认的
-                    .client(getClient(context))
-                    //设置baseUrl
-                    .baseUrl(CoreLibraryRetriever.baseUrl)//post 方法
-                    //添加Gson转换器
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build();
-
+            if (CeleryToolsUtils.isBaseUrl(CelerySpUtils.getString(CoreConstants.SP_BASE_URL))){
+                //获取实例
+                retrofit = new Retrofit.Builder()
+                        //设置OKHttpClient,如果不设置会提供一个默认的
+                        .client(getClient(context))
+                        //设置baseUrl
+                        .baseUrl(CelerySpUtils.getString(CoreConstants.SP_BASE_URL))//post 方法
+                        //添加Gson转换器
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                        .build();
+            }else {
+                //获取实例
+                retrofit = new Retrofit.Builder()
+                        //设置OKHttpClient,如果不设置会提供一个默认的
+                        .client(getClient(context))
+                        //设置baseUrl
+                        .baseUrl(CoreLibraryRetriever.baseUrl)//post 方法
+                        //添加Gson转换器
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                        .build();
+            }
         }
         return retrofit;
     }
@@ -238,9 +250,9 @@ public class RetrofitClientUtil {
 //                    .addInterceptor(new RequestInterceptor(mContext.getApplicationContext()))
                     .cookieJar(cookieJar)
                     .cache(cache)
-                    .connectTimeout(30, TimeUnit.SECONDS)
-                    .readTimeout(30, TimeUnit.SECONDS)
-                    .writeTimeout(30, TimeUnit.SECONDS);
+                    .connectTimeout(120, TimeUnit.SECONDS)
+                    .readTimeout(120, TimeUnit.SECONDS)
+                    .writeTimeout(120, TimeUnit.SECONDS);
 
             //支持动态改变baseUrl
             client = RetrofitUrlManager.getInstance().with(builder)
