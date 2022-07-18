@@ -5,6 +5,7 @@ import android.util.Log;
 
 
 import com.example.xsl.corelibrary.CoreLibrary;
+import com.example.xsl.corelibrary.R;
 import com.example.xsl.corelibrary.http.retrofiturlmanager.RetrofitUrlManager;
 import com.example.xsl.corelibrary.utils.CelerySpUtils;
 import com.example.xsl.corelibrary.utils.CeleryToolsUtils;
@@ -250,9 +251,9 @@ public class RetrofitClientUtil {
 //                    .addInterceptor(new RequestInterceptor(mContext.getApplicationContext()))
                     .cookieJar(cookieJar)
                     .cache(cache)
-                    .connectTimeout(120, TimeUnit.SECONDS)
-                    .readTimeout(120, TimeUnit.SECONDS)
-                    .writeTimeout(120, TimeUnit.SECONDS);
+                    .connectTimeout(Long.parseLong(mContext.getResources().getString(R.string.core_connect_time_out)), TimeUnit.SECONDS)
+                    .readTimeout(Long.parseLong(mContext.getResources().getString(R.string.core_read_time_out)), TimeUnit.SECONDS)
+                    .writeTimeout(Long.parseLong(mContext.getResources().getString(R.string.core_write_time_out)), TimeUnit.SECONDS);
 
             //支持动态改变baseUrl
             client = RetrofitUrlManager.getInstance().with(builder)

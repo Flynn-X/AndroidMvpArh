@@ -1,12 +1,18 @@
 <resources>
     <string name="app_name">CoreLibrary</string>
     <string name="APP_FILE_NAME">CoreLibrary</string>
+    <!-- 设置http请求超时时间  -->
+    <string name="core_connect_time_out">30</string>
+    <string name="core_read_time_out">30</string>
+    <string name="core_write_time_out">30</string>
     <dimen name="textsize_big">20sp</dimen>
     <dimen name="textsize_middle">18sp</dimen>
     <dimen name="textsize_normal">15sp</dimen>
     <dimen name="textsize_small">13sp</dimen>
     <dimen name="textsize_mini">11sp</dimen>
     <dimen name="toolbarhigh">48dp</dimen>
+
+    connectTimeout
 
 
 </resources>

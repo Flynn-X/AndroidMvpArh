@@ -6,6 +6,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 
+import com.example.xsl.corelibrary.R;
 import com.example.xsl.corelibrary.utils.L;
 import com.example.xsl.corelibrary.utils.NetworkUtil;
 import com.franmontiel.persistentcookiejar.ClearableCookieJar;
@@ -169,9 +170,9 @@ public class OkhttpClientUtils {
                     }
                 }).build();
             }
-        }).connectTimeout(120, TimeUnit.SECONDS)
-                .readTimeout(120, TimeUnit.SECONDS)
-                .writeTimeout(120, TimeUnit.SECONDS)
+        }).connectTimeout(Long.parseLong(context.getResources().getString(R.string.core_connect_time_out)), TimeUnit.SECONDS)
+                .readTimeout(Long.parseLong(context.getResources().getString(R.string.core_read_time_out)), TimeUnit.SECONDS)
+                .writeTimeout(Long.parseLong(context.getResources().getString(R.string.core_write_time_out)), TimeUnit.SECONDS)
                 .cookieJar(cookieJar)
                 .build();
 
