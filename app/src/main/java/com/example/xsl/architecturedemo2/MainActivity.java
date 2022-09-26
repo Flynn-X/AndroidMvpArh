@@ -38,12 +38,15 @@ import com.example.xsl.corelibrary.http.OkhttpClientUtils;
 import com.example.xsl.corelibrary.http.retrofiturlmanager.RetrofitUrlManager;
 import com.example.xsl.corelibrary.imageloader.ImageLoader;
 import com.example.xsl.corelibrary.utils.CelerySpUtils;
+import com.example.xsl.corelibrary.utils.CeleryToast;
 import com.example.xsl.corelibrary.utils.CeleryToolsUtils;
 import com.example.xsl.corelibrary.utils.CoreConstants;
 import com.example.xsl.corelibrary.utils.L;
 
+import com.example.xsl.corelibrary.utils.PermissionUtils;
 import com.example.xsl.corelibrary.utils.PictureFromSysUtil;
 import com.example.xsl.corelibrary.widgets.alertdialog.AvatarDialog;
+import com.example.xsl.corelibrary.widgets.alertdialog.PermissionDescriptionDialog;
 import com.example.xsl.selectlibrary.aty.CelerySelectPictureActivity;
 import com.example.xsl.selectlibrary.utils.SelectLibrary;
 import com.example.xsl.xunfeiyuyinlibrary.CelerySpeach;
@@ -51,6 +54,7 @@ import com.example.xsl.xunfeiyuyinlibrary.CelerySpeachLibrary;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 import com.umeng.socialize.UMShareListener;
@@ -69,7 +73,10 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-
+import io.reactivex.Observer;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 @Route(path = "/main/test")
 public class MainActivity extends CeleryBaseActivity implements MainActivityContract.View{
@@ -154,11 +161,11 @@ public class MainActivity extends CeleryBaseActivity implements MainActivityCont
 
 
 
-        if(Build.VERSION.SDK_INT>=23){
-            String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CALL_PHONE,Manifest.permission.READ_LOGS,Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.SET_DEBUG_APP,Manifest.permission.SYSTEM_ALERT_WINDOW
-                    ,Manifest.permission.GET_ACCOUNTS,Manifest.permission.WRITE_APN_SETTINGS,Manifest.permission.CAMERA};
-            ActivityCompat.requestPermissions(this,mPermissionList,123);
-        }
+//        if(Build.VERSION.SDK_INT>=23){
+//            String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.CALL_PHONE,Manifest.permission.READ_LOGS,Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.SET_DEBUG_APP,Manifest.permission.SYSTEM_ALERT_WINDOW
+//                    ,Manifest.permission.GET_ACCOUNTS,Manifest.permission.WRITE_APN_SETTINGS,Manifest.permission.CAMERA};
+//            ActivityCompat.requestPermissions(this,mPermissionList,123);
+//        }
 
     }
 
@@ -173,9 +180,37 @@ public class MainActivity extends CeleryBaseActivity implements MainActivityCont
             Intent intent = null;
             switch (v.getId()){
                 case R.id.button:
-                    ++index;
-                    RetrofitUrlManager.getInstance().setGlobalDomain("https://flynnx.com/" + index);
-                    secondActivityPresenter.getUsers();
+
+//                    PermissionDescriptionDialog.show(MainActivity.this, getString(R.string.READ_PHONE_STATE_DES));
+
+                    String[] permissions = new String[]{
+                            Manifest.permission.READ_PHONE_STATE,
+                    };
+                    String[] descriptions = new String[]{
+                            getString(R.string.READ_PHONE_STATE_DES),
+                    };
+                    PermissionUtils.requestMultiplePermission(MainActivity.this
+                        , permissions, descriptions, new PermissionUtils.OnRequestPermissionListener() {
+                        @Override
+                        public void finish(boolean allGranted) {
+                            if (allGranted){
+                                L.e("用户同意了权限：");
+
+                            }else {
+                                CeleryToast.showShort(MainActivity.this,getString(R.string.PERMISSIONS_NOT_GRANTED));
+                            }
+                        }
+                    });
+
+
+
+
+
+
+
+//                    ++index;
+//                    RetrofitUrlManager.getInstance().setGlobalDomain("https://flynnx.com/" + index);
+//                    secondActivityPresenter.getUsers();
 
 //                    AvatarDialog.show(MainActivity.this);
 

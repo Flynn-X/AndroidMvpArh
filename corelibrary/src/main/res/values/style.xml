@@ -56,4 +56,10 @@
     </style>
 
 
+    <style name="top_style" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/top_enter_anim</item>
+        <item name="android:windowExitAnimation">@anim/top_exit_anim</item>
+    </style>
+
+
 </resources>
