@@ -14,7 +14,7 @@
 
     <!--    权限描述【具体的要在App中定义描述】-->
     <string name="PERMISSIONS_NOT_GRANTED">授权不足，无法使用此功能!</string>
-    <string name="RECORD_AUDIO_DES">当您使用App时，会在闪聊、语音聊天、发布动态、创建问题、编辑个人资料、意见反馈时访问录音权限。不授权上述权限，不影响App其他功能使用。</string>
+    <string name="RECORD_AUDIO_DES">当您使用App时，会在语音聊天、发布动态、创建问题、编辑个人资料、意见反馈时访问录音权限。不授权上述权限，不影响App其他功能使用。</string>
     <string name="EXTERNAL_STORAGE_DES">当您使用App时，会在聊天对话、发布动态、创建问题、编辑个人资料、意见反馈时访问文件读写权限。不授权上述权限，不影响App其他功能使用。</string>
     <string name="CAMERA_DES">当您使用App时，会在聊天对话、发布动态、创建问题、编辑个人资料、意见反馈时访问相机权限。不授权上述权限，不影响App其他功能使用。</string>
     <string name="ACCESS_FINE_LOCATION_DES">当您使用App时，会在聊天对话、发布动态、搜索位置时访问定位权限。不授权上述权限，不影响App其他功能使用。</string>
