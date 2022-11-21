@@ -2,6 +2,7 @@ package com.example.xsl.corelibrary.utils;
 
 import android.Manifest;
 import android.app.Activity;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import com.example.xsl.corelibrary.widgets.alertdialog.PermissionDescriptionDialog;
@@ -60,7 +61,10 @@ public class PermissionUtils {
                 .subscribe(new io.reactivex.Observer<Permission>() {
                     @Override
                     public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
-                        PermissionDescriptionDialog.show(activity,descriptions);
+                        //判定是否展示请求权限的意图
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions)) {
+                            PermissionDescriptionDialog.show(activity, descriptions);
+                        }
                     }
                     @Override
                     public void onNext(@io.reactivex.annotations.NonNull Permission permission) {
@@ -134,7 +138,10 @@ public class PermissionUtils {
                 .subscribe(new io.reactivex.Observer<Permission>() {
                     @Override
                     public void onSubscribe(@io.reactivex.annotations.NonNull Disposable d) {
-                        PermissionDescriptionDialog.show(activity,descriptions[index]);
+                       //判定是否展示请求权限的意图
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permissions[index])) {
+                            PermissionDescriptionDialog.show(activity,descriptions[index]);
+                        }
                     }
                     @Override
                     public void onNext(@io.reactivex.annotations.NonNull Permission permission) {
