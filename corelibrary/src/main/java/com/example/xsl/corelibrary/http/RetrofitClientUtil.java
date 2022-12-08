@@ -70,28 +70,30 @@ public class RetrofitClientUtil {
      * 初始化Retrofit
      */
     public static Retrofit getRetrofit(Context context){
-        if (CeleryToolsUtils.isBaseUrl(CelerySpUtils.getString(CoreConstants.SP_BASE_URL))){
-            //获取实例
-            retrofit = new Retrofit.Builder()
-                    //设置OKHttpClient,如果不设置会提供一个默认的
-                    .client(getClient(context))
-                    //设置baseUrl
-                    .baseUrl(CelerySpUtils.getString(CoreConstants.SP_BASE_URL))//post 方法
-                    //添加Gson转换器
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build();
-        }else {
-            //获取实例
-            retrofit = new Retrofit.Builder()
-                    //设置OKHttpClient,如果不设置会提供一个默认的
-                    .client(getClient(context))
-                    //设置baseUrl
-                    .baseUrl(CoreLibraryRetriever.baseUrl)//post 方法
-                    //添加Gson转换器
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build();
+        if (retrofit == null) {
+            if (CeleryToolsUtils.isBaseUrl(CelerySpUtils.getString(CoreConstants.SP_BASE_URL))) {
+                //获取实例
+                retrofit = new Retrofit.Builder()
+                        //设置OKHttpClient,如果不设置会提供一个默认的
+                        .client(getClient(context))
+                        //设置baseUrl
+                        .baseUrl(CelerySpUtils.getString(CoreConstants.SP_BASE_URL))//post 方法
+                        //添加Gson转换器
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                        .build();
+            } else {
+                //获取实例
+                retrofit = new Retrofit.Builder()
+                        //设置OKHttpClient,如果不设置会提供一个默认的
+                        .client(getClient(context))
+                        //设置baseUrl
+                        .baseUrl(CoreLibraryRetriever.baseUrl)//post 方法
+                        //添加Gson转换器
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                        .build();
+            }
         }
         return retrofit;
     }
@@ -183,8 +185,6 @@ public class RetrofitClientUtil {
                     .newBuilder();
             builder.cacheControl(controlCache);
 
-            L.d("赋值前headers：" + builder.build().headers().toString());
-
             //添加请求头
             Map<String, String> maps = CoreLibrary.getHeaders();
             for (Map.Entry<String, String> entry : maps.entrySet()) {
@@ -241,6 +241,7 @@ public class RetrofitClientUtil {
 
 
     public static OkHttpClient getClient(Context mContext){
+        if (client == null) {
             ClearableCookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(mContext));
             File cacheFile = new File(mContext.getApplicationContext().getCacheDir(), "celery_retrofit");
             Cache cache = new Cache(cacheFile, 1024 * 1024 * 10); //100Mb
@@ -255,13 +256,12 @@ public class RetrofitClientUtil {
 
             //支持动态改变baseUrl
             client = RetrofitUrlManager.getInstance().with(builder)
-                    //网络拦截
+                    //网络拦截（这里必须用网络拦截，否则可能导致抢号登录一直token失效）
                     .addNetworkInterceptor(new RequestInterceptor(mContext.getApplicationContext()))
                     //应用拦截
                     .addInterceptor(new LoggingInterceptor(mContext.getApplicationContext()))
-//                    .addInterceptor(new RequestInterceptor(mContext.getApplicationContext()))
                     .build();
-
+        }
         return client;
     }
 
