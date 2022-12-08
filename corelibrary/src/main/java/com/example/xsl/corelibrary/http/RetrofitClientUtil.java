@@ -248,15 +248,18 @@ public class RetrofitClientUtil {
 //                    .addInterceptor(new LoggingInterceptor(mContext.getApplicationContext()))
 //                    .addInterceptor(new RequestInterceptor(mContext.getApplicationContext()))
                     .cookieJar(cookieJar)
-//                    .cache(cache)
+                    .cache(cache)
                     .connectTimeout(Long.parseLong(mContext.getResources().getString(R.string.core_connect_time_out)), TimeUnit.SECONDS)
                     .readTimeout(Long.parseLong(mContext.getResources().getString(R.string.core_read_time_out)), TimeUnit.SECONDS)
                     .writeTimeout(Long.parseLong(mContext.getResources().getString(R.string.core_write_time_out)), TimeUnit.SECONDS);
 
             //支持动态改变baseUrl
             client = RetrofitUrlManager.getInstance().with(builder)
+                    //网络拦截
+                    .addNetworkInterceptor(new RequestInterceptor(mContext.getApplicationContext()))
+                    //应用拦截
                     .addInterceptor(new LoggingInterceptor(mContext.getApplicationContext()))
-                    .addInterceptor(new RequestInterceptor(mContext.getApplicationContext()))
+//                    .addInterceptor(new RequestInterceptor(mContext.getApplicationContext()))
                     .build();
 
         return client;
