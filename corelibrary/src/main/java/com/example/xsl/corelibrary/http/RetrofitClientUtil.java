@@ -92,7 +92,6 @@ public class RetrofitClientUtil {
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .build();
-
         }
         return retrofit;
     }
@@ -249,7 +248,7 @@ public class RetrofitClientUtil {
 //                    .addInterceptor(new LoggingInterceptor(mContext.getApplicationContext()))
 //                    .addInterceptor(new RequestInterceptor(mContext.getApplicationContext()))
                     .cookieJar(cookieJar)
-                    .cache(cache)
+//                    .cache(cache)
                     .connectTimeout(Long.parseLong(mContext.getResources().getString(R.string.core_connect_time_out)), TimeUnit.SECONDS)
                     .readTimeout(Long.parseLong(mContext.getResources().getString(R.string.core_read_time_out)), TimeUnit.SECONDS)
                     .writeTimeout(Long.parseLong(mContext.getResources().getString(R.string.core_write_time_out)), TimeUnit.SECONDS);
@@ -259,6 +258,7 @@ public class RetrofitClientUtil {
                     .addInterceptor(new LoggingInterceptor(mContext.getApplicationContext()))
                     .addInterceptor(new RequestInterceptor(mContext.getApplicationContext()))
                     .build();
+
         return client;
     }
 
