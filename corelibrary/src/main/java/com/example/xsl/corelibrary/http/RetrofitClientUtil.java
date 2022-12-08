@@ -62,7 +62,7 @@ import retrofit2.http.Multipart;
 public class RetrofitClientUtil {
 
 
-    protected static  Retrofit retrofit = null;
+    protected static Retrofit retrofit = null;
     private static OkHttpClient  client = null;
 
 
@@ -70,30 +70,29 @@ public class RetrofitClientUtil {
      * 初始化Retrofit
      */
     public static Retrofit getRetrofit(Context context){
-        if (retrofit == null){
-            if (CeleryToolsUtils.isBaseUrl(CelerySpUtils.getString(CoreConstants.SP_BASE_URL))){
-                //获取实例
-                retrofit = new Retrofit.Builder()
-                        //设置OKHttpClient,如果不设置会提供一个默认的
-                        .client(getClient(context))
-                        //设置baseUrl
-                        .baseUrl(CelerySpUtils.getString(CoreConstants.SP_BASE_URL))//post 方法
-                        //添加Gson转换器
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                        .build();
-            }else {
-                //获取实例
-                retrofit = new Retrofit.Builder()
-                        //设置OKHttpClient,如果不设置会提供一个默认的
-                        .client(getClient(context))
-                        //设置baseUrl
-                        .baseUrl(CoreLibraryRetriever.baseUrl)//post 方法
-                        //添加Gson转换器
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                        .build();
-            }
+        if (CeleryToolsUtils.isBaseUrl(CelerySpUtils.getString(CoreConstants.SP_BASE_URL))){
+            //获取实例
+            retrofit = new Retrofit.Builder()
+                    //设置OKHttpClient,如果不设置会提供一个默认的
+                    .client(getClient(context))
+                    //设置baseUrl
+                    .baseUrl(CelerySpUtils.getString(CoreConstants.SP_BASE_URL))//post 方法
+                    //添加Gson转换器
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+        }else {
+            //获取实例
+            retrofit = new Retrofit.Builder()
+                    //设置OKHttpClient,如果不设置会提供一个默认的
+                    .client(getClient(context))
+                    //设置baseUrl
+                    .baseUrl(CoreLibraryRetriever.baseUrl)//post 方法
+                    //添加Gson转换器
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+
         }
         return retrofit;
     }
@@ -185,6 +184,8 @@ public class RetrofitClientUtil {
                     .newBuilder();
             builder.cacheControl(controlCache);
 
+            L.d("赋值前headers：" + builder.build().headers().toString());
+
             //添加请求头
             Map<String, String> maps = CoreLibrary.getHeaders();
             for (Map.Entry<String, String> entry : maps.entrySet()) {
@@ -218,7 +219,6 @@ public class RetrofitClientUtil {
                     L.d("Json传递请求参数："+ CeleryToolsUtils.URLDecoderForUtf8(oldParamsJson));
                 }
             }
-
             L.d("headers：" + request.headers().toString());
             return chain.proceed(request);
         }
@@ -242,7 +242,6 @@ public class RetrofitClientUtil {
 
 
     public static OkHttpClient getClient(Context mContext){
-        if (client == null) {
             ClearableCookieJar cookieJar = new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(mContext));
             File cacheFile = new File(mContext.getApplicationContext().getCacheDir(), "celery_retrofit");
             Cache cache = new Cache(cacheFile, 1024 * 1024 * 10); //100Mb
@@ -260,7 +259,6 @@ public class RetrofitClientUtil {
                     .addInterceptor(new LoggingInterceptor(mContext.getApplicationContext()))
                     .addInterceptor(new RequestInterceptor(mContext.getApplicationContext()))
                     .build();
-        }
         return client;
     }
 

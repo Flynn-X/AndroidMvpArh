@@ -183,24 +183,24 @@ public class MainActivity extends CeleryBaseActivity implements MainActivityCont
 
 //                    PermissionDescriptionDialog.show(MainActivity.this, getString(R.string.READ_PHONE_STATE_DES));
 
-                    String[] permissions = new String[]{
-                            Manifest.permission.READ_PHONE_STATE,
-                    };
-                    String[] descriptions = new String[]{
-                            getString(R.string.READ_PHONE_STATE_DES),
-                    };
-                    PermissionUtils.requestMultiplePermission(MainActivity.this
-                        , permissions, descriptions, new PermissionUtils.OnRequestPermissionListener() {
-                        @Override
-                        public void finish(boolean allGranted) {
-                            if (allGranted){
-                                L.e("用户同意了权限：");
-
-                            }else {
-                                CeleryToast.showShort(MainActivity.this,getString(R.string.PERMISSIONS_NOT_GRANTED));
-                            }
-                        }
-                    });
+//                    String[] permissions = new String[]{
+//                            Manifest.permission.READ_PHONE_STATE,
+//                    };
+//                    String[] descriptions = new String[]{
+//                            getString(R.string.READ_PHONE_STATE_DES),
+//                    };
+//                    PermissionUtils.requestMultiplePermission(MainActivity.this
+//                        , permissions, descriptions, new PermissionUtils.OnRequestPermissionListener() {
+//                        @Override
+//                        public void finish(boolean allGranted) {
+//                            if (allGranted){
+//                                L.e("用户同意了权限：");
+//
+//                            }else {
+//                                CeleryToast.showShort(MainActivity.this,getString(R.string.PERMISSIONS_NOT_GRANTED));
+//                            }
+//                        }
+//                    });
 
 
 
@@ -278,8 +278,8 @@ public class MainActivity extends CeleryBaseActivity implements MainActivityCont
 //                            });
 
 
-//                    intent = new Intent(MainActivity.this,SecondActivity.class);
-//                    startActivity(intent);
+                    intent = new Intent(MainActivity.this,SecondActivity.class);
+                    startActivity(intent);
 
 
 //                    CeleryAlertDialog.show(MainActivity.this, "提示", "确定要删除？" + System.currentTimeMillis(), new AlertDialogOnclickListener() {
