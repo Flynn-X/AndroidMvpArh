@@ -144,19 +144,25 @@ public class RetrofitClientUtil {
             L.d("响应时间："+((t2 - t1)/1e6d)+"");
             L.json(content);
 
-            if (NetworkUtil.isNetworkAvailable(mContext)) {
-                int maxAge = 0 * 60; // 有网络时 设置缓存超时时间0个小时
-                response.newBuilder()
-                        .header("Cache-Control", "public, max-age=" + maxAge)
-                        .removeHeader("Pragma")// 清除头信息，因为服务器如果不支持，会返回一些干扰信息，不清除下面无法生效
-                        .build();
-            } else {
-                int maxStale = 60 * 60 * 24 * 28; // 无网络时，设置超时为4周
-                response.newBuilder()
-                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-                        .removeHeader("Pragma")
-                        .build();
-            }
+            int maxAge = 0 * 60; // 有网络时 设置缓存超时时间0个小时
+            response.newBuilder()
+                    .header("Cache-Control", "public, max-age=" + maxAge)
+                    .removeHeader("Pragma")// 清除头信息，因为服务器如果不支持，会返回一些干扰信息，不清除下面无法生效
+                    .build();
+
+//            if (NetworkUtil.isNetworkAvailable(mContext)) {
+//                int maxAge = 0 * 60; // 有网络时 设置缓存超时时间0个小时
+//                response.newBuilder()
+//                        .header("Cache-Control", "public, max-age=" + maxAge)
+//                        .removeHeader("Pragma")// 清除头信息，因为服务器如果不支持，会返回一些干扰信息，不清除下面无法生效
+//                        .build();
+//            } else {
+//                int maxStale = 60 * 60 * 24 * 28; // 无网络时，设置超时为4周
+//                response.newBuilder()
+//                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+//                        .removeHeader("Pragma")
+//                        .build();
+//            }
 
             return response;
         }
@@ -175,11 +181,12 @@ public class RetrofitClientUtil {
 
         @Override
         public Response intercept(Chain chain) throws IOException {
-            if (NetworkUtil.isNetworkAvailable(mContext)) {
-                controlCache = CacheControl.FORCE_NETWORK;
-            }else {
-                controlCache = CacheControl.FORCE_CACHE;
-            }
+            controlCache = CacheControl.FORCE_NETWORK;
+//            if (NetworkUtil.isNetworkAvailable(mContext)) {
+//                controlCache = CacheControl.FORCE_NETWORK;
+//            }else {
+//                controlCache = CacheControl.FORCE_CACHE;
+//            }
 
             Request.Builder builder = chain.request()
                     .newBuilder();
